@@ -2,14 +2,6 @@
 
 This directory contains tools and scripts for generating datasets for ontology reasoning tasks.
 
-## Overview
-
-The dataset generation pipeline processes ontology files (in FSS format) and produces various datasets for ontology reasoning tasks:
-1. Extracts subsumption relationships from ontologies
-2. Computes justifications for these subsumptions
-3. Transforms justifications into RAG datasets
-4. Creates prompt datasets for language models
-
 ## Requirements
 
 - Download BRIGHT from https://github.com/xlang-ai/BRIGHT
