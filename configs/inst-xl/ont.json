@@ -1,0 +1,10 @@
+{
+  "instructions": {
+    "query": "Represent the conclusion for retrieving minimal explanations: ",
+    "document": "Represent the explanation for retrieval: "
+  },
+  "instructions_long": {
+    "query": "Represent the conclusion for retrieving approximate explanations: ",
+    "document": "Represent the explanation for retrieval: "
+  }
+}

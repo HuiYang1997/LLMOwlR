@@ -1,0 +1,10 @@
+{
+  "instructions": {
+    "query": "<|user|>\nGiven a logical conclusion, retrieve the explanations that logically derived from the conclusion\n<|embed|>\n",
+    "document": "<|embed|>\n"
+  },
+  "instructions_long": {
+    "query": "<|user|>\nGiven a logical conclusion, retrieve the explanations that logically derived from the conclusion\n<|embed|>\n",
+    "document": "<|embed|>\n"
+  }
+}

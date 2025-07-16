@@ -1,0 +1,10 @@
+{
+  "instructions": {
+    "query": "Instruct: Retrieve minimal explanations that can be logically derived from this conclusion\nQuery: ",
+    "document": ""
+  },
+  "instructions_long": {
+    "query": "Instruct: Retrieve approximate explanations that can be logically derived from this conclusion\nQuery: ",
+    "document": ""
+  }
+}
