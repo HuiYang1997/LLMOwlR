@@ -21,7 +21,7 @@ This directory contains tools and scripts for generating datasets for ontology r
 ### Main Dataset Generation Script
 
 ```bash
-python generateDataset.py <onto_file_path> <num_just> <num_subsumptions>
+python generateDataset.py --ont <onto_file_path> --n_just <num_just> --n_sub <num_subsumptions>
 ```
 
 Parameters:
@@ -32,7 +32,7 @@ Parameters:
 
 Example:
 ```bash
-python generateDataset.py data/foodon.fss 100 50
+python generateDataset.py --ont data/foodon.fss --n_just 100 --n_sub 50
 ```
 
 
