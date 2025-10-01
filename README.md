@@ -23,18 +23,7 @@ The dataset generation pipeline processes ontology files (in OWL/FSS format) and
   - datasets
 
 
-## Directory Structure
 
-- `BRIGHT/`: Contains the core retrieval functionality for embedding models
-- `cache/`: Storage for computed embeddings and intermediate results
-- `configs/`: Configuration files for different models
-- `data/`: Input and output data files
-- `justifications/`: Generated justifications for subsumption relationships
-- `lib/`: Java libraries for ontology processing
-- `outputs/`: Output files from mimic runs
-- `prompt_learning_dataset/`: (**FINAL DATASET**) Generated datasets for prompt learning
-- `subsumptions/`: Extracted subsumption relationships from ontologies
-- `analyse_result/`: Analyse the output result
 
 
 
@@ -81,6 +70,17 @@ python analysis_script.py Qwen3-32B_output.json
 This script evaluates the model's reasoning performance by comparing predicted justifications against ground truth annotations.
 
 
+## Directory Structure
 
+- `BRIGHT/`: Contains the core retrieval functionality for embedding models
+- `cache/`: Storage for computed embeddings and intermediate results
+- `configs/`: Configuration files for different models
+- `data/`: Input and output data files
+- `justifications/`: Generated justifications for subsumption relationships
+- `lib/`: Java libraries for ontology processing
+- `outputs/`: Output files from mimic runs
+- `prompt_learning_dataset/`: (**FINAL DATASET**) Generated datasets for prompt learning
+- `subsumptions/`: Extracted subsumption relationships from ontologies
+- `analyse_result/`: Analyse the output result
 
 
