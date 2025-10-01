@@ -1,5 +1,6 @@
 # LLMs for Ontology Proof 
 
+
 The directory of codes for automatically generating and evaluating datasets for generating proofs with ontologies.
 
 
@@ -94,8 +95,6 @@ python analysis_script.py Qwen3-32B_output.json
 ```
 
 This script evaluates the model's reasoning performance by comparing predicted justifications against ground truth annotations.
-
-
 
 
 ## Directory Structure
