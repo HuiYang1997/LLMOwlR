@@ -2,6 +2,14 @@
 
 This directory contains tools and scripts for generating datasets for ontology reasoning tasks.
 
+## Overview
+
+The dataset generation pipeline processes ontology files (in OWL/FSS format) and produces various datasets for ontology reasoning tasks:
+1. Extracts subsumption relationships from ontologies
+2. Computes justifications for these subsumptions
+3. Transforms justifications into RAG datasets
+4. Creates prompt datasets for language models
+
 ## Requirements
 
 - Download BRIGHT from https://github.com/xlang-ai/BRIGHT
@@ -15,51 +23,64 @@ This directory contains tools and scripts for generating datasets for ontology r
   - datasets
 
 
-
-## Usage
-
-### Main Dataset Generation Script
-
-```bash
-python generateDataset.py --ont <onto_file_path> --n_just <num_just> --n_sub <num_subsumptions>
-```
-
-Parameters:
-- `onto_file_path`: Path to the ontology file (e.g., data/foodon.fss)
-- `num_just`: Maximum number of justifications per subsumption (e.g., 100)
-- `num_subsumptions`: Number of subsumptions to process (e.g., 50)
-
-
-Example:
-```bash
-python generateDataset.py --ont data/foodon.fss --n_just 100 --n_sub 50
-```
-
-
-Note that the input ontology file should be in fss format. You could transfer any input ontology to the required form as follows:
-
-```bash
-java -jar lib/owl-to-fss-converter-1.0-SNAPSHOT.jar <input ont> <output_ont>
-```
-
-## Pipeline Steps
-
-1. **Create subsumption files** for different distances
-2. **Compute justifications** for subsumptions
-3. **Transfer justifications to RAG dataset**
-4. **Apply embedding models** (e.g., BGE) to compute distances for queries
-5. **Build prompt datasets** based on the RAG datasets
-6. **Move output files** to appropriate locations
-
-
 ## Directory Structure
 
 - `BRIGHT/`: Contains the core retrieval functionality for embedding models
 - `cache/`: Storage for computed embeddings and intermediate results
-- `configs/`: Configuration files for RAG method
-- `data/`: Input data files
+- `configs/`: Configuration files for different models
+- `data/`: Input and output data files
 - `justifications/`: Generated justifications for subsumption relationships
 - `lib/`: Java libraries for ontology processing
 - `outputs/`: Output files from mimic runs
-- `subsumptions/`: Extracted subsumption relationships from ontologies
 - `prompt_learning_dataset/`: (**FINAL DATASET**) Generated datasets for prompt learning
+- `subsumptions/`: Extracted subsumption relationships from ontologies
+- `analyse_result/`: Analyse the output result
+
+
+
+## Usage
+
+### 1. Dataset Generation
+
+Generate ontology reasoning datasets from OWL/FSS files:
+
+```bash
+python generateDataset.py --ont <ontology_file> --n_just <max_justifications> --n_sub <num_subsumptions>
+```
+
+**Parameters:**
+- `--ont`: Path to the ontology file (OWL/FSS format)
+- `--n_just`: Maximum number of justifications to compute per subsumption
+- `--n_sub`: Number of subsumption relationships to process
+
+**Example:**
+```bash
+python generateDataset.py --ont data/foodon.fss --n_just 100 --n_sub 50
+```
+
+This command processes the FoodOn ontology, extracting 50 subsumption relationships and computing up to 100 justifications for each.
+
+### 2. Result Analysis
+
+Analyze model outputs and compute performance metrics:
+
+```bash
+cd analyse_result
+python analysis_script.py <output_file>
+```
+
+**Parameters:**
+- `<output_file>`: Path to the model output JSON file (must contain input, responce, and ground truth IDs)
+
+**Example:**
+```bash
+cd analyse_result
+python analysis_script.py Qwen3-32B_output.json
+```
+
+This script evaluates the model's reasoning performance by comparing predicted justifications against ground truth annotations.
+
+
+
+
+
