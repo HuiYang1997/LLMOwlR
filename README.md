@@ -1,4 +1,4 @@
-# Dataset Generation for Ontology Reasoning
+# LLMs for Ontology Proof
 
 This directory contains tools and scripts for generating datasets for ontology reasoning tasks.
 
