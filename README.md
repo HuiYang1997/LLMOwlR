@@ -1,4 +1,4 @@
-# LLMs for Ontology Proof 
+# LLMs for Ontology Proof （LLM4Proof）
 
 
 The directory of codes for automatically generating and evaluating datasets for generating proofs with ontologies.
