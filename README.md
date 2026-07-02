@@ -1,6 +1,7 @@
 # LLMs for Ontology Proof (LLM4Proof)
 
-↳ [Hugging Face Dataset](https://huggingface.co/datasets/Hui97/LLMOwlR)
+[![Dataset](https://img.shields.io/badge/🤗%20Dataset-Hugging%20Face-yellow)](https://huggingface.co/datasets/Hui97/LLMOwlR)
+
 
 Code for automatically generating and evaluating datasets for OWL ontology proof generation with large language models.
 
