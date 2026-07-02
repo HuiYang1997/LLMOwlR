@@ -41,7 +41,7 @@ INSTALL_RETRIEVAL=1 ./scripts/setup_and_run.sh
 INSTALL_RETRIEVAL=1 INSTALL_BM25=1 ./scripts/setup_and_run.sh
 
 # Run generation on your own ontology instead of the small bundled example.
-GENERATION_ARGS="--ont data/foodon.fss --n_just 100 --n_sub 50" ./scripts/setup_and_run.sh
+GENERATION_ARGS="--ont <your_ont_path!> --n_just 100 --n_sub 50" ./scripts/setup_and_run.sh
 
 # Skip either part.
 RUN_GENERATION=0 ./scripts/setup_and_run.sh
@@ -116,7 +116,6 @@ The input JSON must contain `prompt`, `response`, and ground-truth IDs such as `
 - `prompt_learning_dataset/`: generated prompt-learning dataset
 - `subsumptions/`: extracted subsumption relationships from ontologies
 - `analyse_result/`: model-output analysis scripts and examples
-- `huggingface/`: Hugging Face dataset card, data preparation, and upload scripts
 - `scripts/`: setup and run automation
 
 ## Citation

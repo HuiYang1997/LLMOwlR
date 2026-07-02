@@ -8,4 +8,5 @@ outputs/
 subsumptions/
 justifications/
 prompt_learning_dataset/
+huggingface/
 huggingface/data/
