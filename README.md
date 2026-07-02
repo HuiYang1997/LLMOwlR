@@ -55,99 +55,20 @@ The default generation command uses `data/example.fss`, `--n_just 1`, `--n_sub 1
 
 ## Dataset
 
-The paper dataset is available in two forms:
+The dataset is available in two equivalent forms:
 
-- Hugging Face dataset: a viewer-friendly JSONL version for browsing and `datasets.load_dataset`.
-- Zip dataset: the original `prompt_learning_dataset.zip` artifact with the folder structure used by the code.
+- [Hugging Face Dataset](https://huggingface.co/datasets/Hui97/LLMOwlR): recommended for browsing the data online or loading it with `datasets`.
+- [prompt_learning_dataset.zip](prompt_learning_dataset.zip): the original zip archive used by this repository.
 
-### Hugging Face Dataset
-
-Public link:
-
-```text
-https://huggingface.co/datasets/Hui97/LLMOwlR
-```
-
-Load with Hugging Face Datasets:
+Load the Hugging Face version:
 
 ```python
 from datasets import load_dataset
 
 dataset = load_dataset("Hui97/LLMOwlR", split="train")
-foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="train")
 ```
 
-Available viewer configurations:
-
-| Configuration | Rows | Contents |
-| --- | ---: | --- |
-| `default` | 1,969 | all ontology subsets |
-| `foodon` | 698 | FoodOn subset |
-| `go-plus` | 664 | GO-Plus subset |
-| `snomedCT` | 607 | SNOMED CT subset |
-
-Each JSONL row contains:
-
-- `ontology`
-- `atomic_distance`
-- `query_id`
-- `format`
-- `query`
-- `axioms`
-- `correct_axiom_indices`
-- `correct_axioms`
-- `source_path`
-
-`atomic_distance` follows the metric used in the paper for selecting target conclusions. For an inferred atomic subsumption `A ⊑ B`, where `A` and `B` are atomic concepts, it is a heuristic estimate of reasoning length: roughly, the length of the shortest direct-subsumption chain connecting `A` to `B`, which also indicates about how many intermediate atomic concepts are needed between the two concepts. A direct subsumption has atomic distance `1`; larger values usually indicate longer or more complex reasoning.
-
-To rebuild and upload the Hugging Face layout:
-
-```bash
-python huggingface/prepare_dataset.py \
-  --input prompt_learning_dataset.zip \
-  --output huggingface/data
-
-export HF_TOKEN=<your_hugging_face_token>
-python huggingface/upload_dataset.py --repo-id Hui97/LLMOwlR
-```
-
-The prepared upload folder is `huggingface/`. See `huggingface/README.md` for the dataset card and detailed structure.
-
-### Zip Dataset
-
-The original paper data is included as `prompt_learning_dataset.zip`. It can be downloaded directly from the GitHub repository and preserves the structure used by the generation and analysis code.
-
-Original zip structure:
-
-```text
-prompt_learning_dataset/
-├── foodon/
-│   ├── d4/
-│   │   ├── justification_index.json
-│   │   ├── query_0_d4.json
-│   │   ├── query_0_d4_owl.json
-│   │   └── ...
-│   ├── d6/
-│   ├── d8/
-│   ├── d10/
-│   ├── d12/
-│   ├── d14/
-│   ├── d16/
-│   ├── verbalization_map.json
-│   └── all_length_statistics.json
-├── go-plus/
-│   └── ...
-└── snomedCT/
-    └── ...
-```
-
-Key files:
-
-- `query_N_dX.json`: natural-language reasoning task
-- `query_N_dX_owl.json`: OWL-format version of the same task
-- `justification_index.json`: maps each query file to the indices of correct support axioms
-- `verbalization_map.json`: maps OWL URIs to human-readable labels
-- `all_length_statistics.json`: query-length distribution and support indices grouped by proof length
+The Hugging Face version is organized for display and direct loading. The zip version preserves the original file layout, including `query_N_dX.json`, `query_N_dX_owl.json`, `justification_index.json`, `verbalization_map.json`, and `all_length_statistics.json`.
 
 ## Usage
 
