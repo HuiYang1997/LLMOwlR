@@ -1,0 +1,6 @@
+-r requirements-retrieval.txt
+
+# Optional BM25 retrieval dependencies. These can be slow to resolve on Python 3.12.
+Cython
+pyserini
+gensim
