@@ -3,7 +3,13 @@ import argparse
 import os
 from pathlib import Path
 
-from huggingface_hub import HfApi
+try:
+    from huggingface_hub import HfApi
+except ModuleNotFoundError as exc:
+    raise SystemExit(
+        "Missing dependency: huggingface_hub. "
+        "Install the project dependencies first with `python -m pip install -r requirements.txt`."
+    ) from exc
 
 
 def main():
