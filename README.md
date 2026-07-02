@@ -65,7 +65,7 @@ Load the Hugging Face version:
 ```python
 from datasets import load_dataset
 
-dataset = load_dataset("Hui97/LLMOwlR", split="train")
+dataset = load_dataset("Hui97/LLMOwlR", split="test")
 ```
 
 The Hugging Face version is organized for display and direct loading. The zip version preserves the original file layout, including `query_N_dX.json`, `query_N_dX_owl.json`, `justification_index.json`, `verbalization_map.json`, and `all_length_statistics.json`.

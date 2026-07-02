@@ -16,22 +16,22 @@ tags:
 configs:
 - config_name: default
   data_files:
-  - split: train
+  - split: test
     path:
     - data/foodon.jsonl
     - data/go-plus.jsonl
     - data/snomedCT.jsonl
 - config_name: foodon
   data_files:
-  - split: train
+  - split: test
     path: data/foodon.jsonl
 - config_name: go-plus
   data_files:
-  - split: train
+  - split: test
     path: data/go-plus.jsonl
 - config_name: snomedCT
   data_files:
-  - split: train
+  - split: test
     path: data/snomedCT.jsonl
 ---
 
@@ -47,20 +47,20 @@ Each row contains a reasoning query, a shuffled list of candidate axioms, and th
 
 ## Dataset Viewer
 
-The default configuration combines all three ontology subsets in one `train` split. Separate `foodon`, `go-plus`, and `snomedCT` configurations are also provided for browsing or loading one ontology at a time.
+The default configuration combines all three ontology subsets in one `test` split. Separate `foodon`, `go-plus`, and `snomedCT` configurations are also provided for browsing or loading one ontology at a time.
 
 | Configuration | Split | Rows | Source file |
 | --- | --- | ---: | --- |
-| `default` | `train` | 1,969 | `data/*.jsonl` |
-| `foodon` | `train` | 698 | `data/foodon.jsonl` |
-| `go-plus` | `train` | 664 | `data/go-plus.jsonl` |
-| `snomedCT` | `train` | 607 | `data/snomedCT.jsonl` |
+| `default` | `test` | 1,969 | `data/*.jsonl` |
+| `foodon` | `test` | 698 | `data/foodon.jsonl` |
+| `go-plus` | `test` | 664 | `data/go-plus.jsonl` |
+| `snomedCT` | `test` | 607 | `data/snomedCT.jsonl` |
 
 ```python
 from datasets import load_dataset
 
-dataset = load_dataset("Hui97/LLMOwlR", split="train")
-foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="train")
+dataset = load_dataset("Hui97/LLMOwlR", split="test")
+foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="test")
 ```
 
 ## Data Structure
