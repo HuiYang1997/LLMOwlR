@@ -9,6 +9,13 @@ import os
 import re
 from typing import List, Tuple, Optional, Dict, Set
 from enum import Enum
+
+import jpype
+from deeponto import init_jvm
+
+if not jpype.isJVMStarted():
+    init_jvm(os.environ.get("DEEPONTO_JVM_MEMORY", "8g"))
+
 from deeponto.onto import Ontology
 
 class AxiomType(Enum):
@@ -592,19 +599,19 @@ def test_deeponto_reasoner():
     conclusion = "A1 ⊑ A8"
     result = reasoner.check_subsumption(axioms, conclusion)
     print(f"Test 1 - Does {conclusion} follow from axioms? {result}")
-    
+
     # Test 2: Existential quantifier
     axioms = ["A1 ⊑ A2 ⊓ ∃r3.A4", "A2 ⊑ A8"]
     conclusion = "A1 ⊑ A8"
     result = reasoner.check_subsumption(axioms, conclusion)
     print(f"Test 2 - Does {conclusion} follow from axioms with existential? {result}")
-    
+
     # Test 3: Equivalence
     axioms = ["A1 ≡ A2 ⊓ A3", "A2 ⊑ A8"]
     conclusion = "A1 ⊑ A8"
     result = reasoner.check_subsumption(axioms, conclusion)
     print(f"Test 3 - Does {conclusion} follow from equivalence axioms? {result}")
-    
+
     # Test 4: Complex nested axiom
     print("\nTesting with a complex nested axiom:")
     nested_axiom = "A28 ≡ A12 ⊓ ∃r3.(∃r4.A5 ⊓ ∃r9.A16) ⊓ ∃r3.∃r6.A7"
@@ -614,8 +621,8 @@ def test_deeponto_reasoner():
         print(f"Successfully parsed and added: {nested_axiom}")
     except Exception as e:
         print(f"Failed to parse complex axiom: {e}")
-    
+
     return reasoner
 
 if __name__ == "__main__":
-    test_deeponto_reasoner() 
+    test_deeponto_reasoner()
