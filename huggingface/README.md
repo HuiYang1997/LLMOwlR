@@ -41,6 +41,10 @@ This dataset contains prompt-learning samples for generating and evaluating OWL 
 
 Each row contains a reasoning query, a shuffled list of candidate axioms, and the indices of the minimal support axioms in that shuffled list. Natural-language and OWL-formatted variants are represented as separate rows.
 
+## Atomic Distance
+
+`atomic_distance` follows the metric used in the paper for selecting target conclusions. For an inferred atomic subsumption `A ⊑ B`, where `A` and `B` are atomic concepts, it is a heuristic estimate of reasoning length: roughly, the length of the shortest direct-subsumption chain connecting `A` to `B`, which also indicates about how many intermediate atomic concepts are needed between the two concepts. A direct subsumption has atomic distance `1`; larger values usually indicate longer or more complex reasoning.
+
 ## Dataset Viewer
 
 The default configuration combines all three ontology subsets in one `train` split. Separate `foodon`, `go-plus`, and `snomedCT` configurations are also provided for browsing or loading one ontology at a time.
@@ -79,7 +83,7 @@ huggingface/
 JSONL columns:
 
 - `ontology`: ontology subset name, such as `foodon`, `go-plus`, or `snomedCT`
-- `distance`: proof-distance folder extracted from the original data; `foodon` and `go-plus` use `4, 6, 8, 10, 12, 14, 16`, while `snomedCT` uses `1` and `11`
+- `atomic_distance`: proof-distance bucket extracted from the original data; `foodon` and `go-plus` use `4, 6, 8, 10, 12, 14, 16`, while `snomedCT` uses `1` and `11`
 - `query_id`: source query id
 - `format`: `natural_language` or `owl`
 - `query`: prompt query

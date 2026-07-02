@@ -4,7 +4,7 @@
     "foodon": {
       "rows": 698,
       "file": "foodon.jsonl",
-      "distances": [
+      "atomic_distances": [
         4,
         6,
         8,
@@ -21,7 +21,7 @@
     "go-plus": {
       "rows": 664,
       "file": "go-plus.jsonl",
-      "distances": [
+      "atomic_distances": [
         4,
         6,
         8,
@@ -38,7 +38,7 @@
     "snomedCT": {
       "rows": 607,
       "file": "snomedCT.jsonl",
-      "distances": [
+      "atomic_distances": [
         1,
         11
       ],

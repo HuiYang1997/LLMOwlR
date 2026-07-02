@@ -59,7 +59,7 @@ def iter_rows(zip_path):
             if not match:
                 continue
 
-            ontology, distance_dir, distance, filename = match.group(1), match.group(2), int(match.group(3)), match.group(4)
+            ontology, distance_dir, atomic_distance, filename = match.group(1), match.group(2), int(match.group(3)), match.group(4)
             rel_path = f"{distance_dir}/{filename}"
             sample = load_json_from_zip(zip_file, member)
             indices = index_by_ontology.get(ontology, {}).get(rel_path)
@@ -74,7 +74,7 @@ def iter_rows(zip_path):
 
             yield {
                 "ontology": ontology,
-                "distance": distance,
+                "atomic_distance": atomic_distance,
                 "query_id": filename.split("_d")[0].replace("query_", ""),
                 "format": "owl" if filename.endswith("_owl.json") else "natural_language",
                 "query": sample.get("query", ""),
@@ -124,13 +124,13 @@ def main():
     }
 
     for ontology, rows in sorted(rows_by_ontology.items()):
-        rows.sort(key=lambda row: (row["distance"], row["format"], row["query_id"]))
+        rows.sort(key=lambda row: (row["atomic_distance"], row["format"], row["query_id"]))
         output_path = output_dir / f"{ontology}.jsonl"
         write_jsonl(output_path, rows)
         summary["ontologies"][ontology] = {
             "rows": len(rows),
             "file": output_path.name,
-            "distances": sorted({row["distance"] for row in rows}),
+            "atomic_distances": sorted({row["atomic_distance"] for row in rows}),
             "formats": sorted({row["format"] for row in rows}),
         }
         summary["total_rows"] += len(rows)
