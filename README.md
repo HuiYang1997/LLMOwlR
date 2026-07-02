@@ -1,5 +1,7 @@
 # LLMs for Ontology Proof (LLM4Proof)
 
+↳ [Hugging Face Dataset](https://huggingface.co/datasets/Hui97/LLMOwlR)
+
 Code for automatically generating and evaluating datasets for OWL ontology proof generation with large language models.
 
 ## Requirements
@@ -51,6 +53,23 @@ SKIP_INSTALL=1 VENV_DIR=/path/to/venv ./scripts/setup_and_run.sh
 
 The default generation command uses `data/example.fss`, `--n_just 1`, `--n_sub 1`, `--distances 4`, and `--skip_retrieval` so that the script can validate the Java/DeepOnto path without downloading embedding models. For the full pipeline, pass a real ontology and omit `--skip_retrieval`.
 
+## Dataset
+
+The dataset is available in two equivalent forms:
+
+- [Hugging Face Dataset](https://huggingface.co/datasets/Hui97/LLMOwlR): recommended for browsing the data online or loading it with `datasets`.
+- [prompt_learning_dataset.zip](prompt_learning_dataset.zip): the original zip archive used by this repository.
+
+Load the Hugging Face version:
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("Hui97/LLMOwlR", split="test")
+```
+
+The Hugging Face version is organized for display and direct loading. The zip version preserves the original file layout, including `query_N_dX.json`, `query_N_dX_owl.json`, `justification_index.json`, `verbalization_map.json`, and `all_length_statistics.json`.
+
 ## Usage
 
 ### 1. Dataset Generation
@@ -74,38 +93,6 @@ Additional options:
 - `--retrieval_model`: retrieval model passed to `mimic_run.py`, default `bge`
 - `--subsumption_java_opts` / `--justification_java_opts`: Java heap/options
 
-The data used in the paper is provided in `prompt_learning_dataset.zip`. Its original structure is:
-
-```text
-prompt_learning_dataset/
-├── foodon/
-│   ├── d4/
-│   │   ├── justification_index.json
-│   │   ├── query_0_d4.json
-│   │   ├── query_0_d4_owl.json
-│   │   └── ...
-│   ├── d6/
-│   ├── d8/
-│   ├── d10/
-│   ├── d12/
-│   ├── d14/
-│   ├── d16/
-│   ├── verbalization_map.json
-│   └── all_length_statistics.json
-├── go-plus/
-│   └── ...
-└── snomedCT/
-    └── ...
-```
-
-Key files:
-
-- `query_N_dX.json`: natural-language reasoning task
-- `query_N_dX_owl.json`: OWL-format version of the same task
-- `justification_index.json`: maps each query file to the indices of correct support axioms
-- `verbalization_map.json`: maps OWL URIs to human-readable labels
-- `all_length_statistics.json`: query-length distribution and support indices grouped by proof length
-
 ### 2. Result Analysis
 
 Analyze model outputs and compute performance metrics:
@@ -116,45 +103,6 @@ python analysis_script.py Qwen3-32B_output.json
 ```
 
 The input JSON must contain `prompt`, `response`, and ground-truth IDs such as `correct_ids`.
-
-## Hugging Face Dataset
-
-Prepared dataset upload folder: `huggingface/`
-
-Expected public dataset link:
-
-```text
-https://huggingface.co/datasets/HuiYang1997/LLMOwlR
-```
-
-Prepare the Hugging Face JSONL layout from the bundled zip:
-
-```bash
-python huggingface/prepare_dataset.py \
-  --input prompt_learning_dataset.zip \
-  --output huggingface/data
-```
-
-Upload after authenticating with Hugging Face:
-
-```bash
-export HF_TOKEN=<your_hugging_face_token>
-python huggingface/upload_dataset.py --repo-id HuiYang1997/LLMOwlR
-```
-
-Use `--repo-id` or `HF_REPO_ID` to upload under a different namespace. The prepared JSONL rows contain:
-
-- `ontology`
-- `distance`
-- `query_id`
-- `format`
-- `query`
-- `axioms`
-- `correct_axiom_indices`
-- `correct_axioms`
-- `source_path`
-
-See `huggingface/README.md` for the dataset card and detailed structure.
 
 ## Directory Structure
 
@@ -168,7 +116,6 @@ See `huggingface/README.md` for the dataset card and detailed structure.
 - `prompt_learning_dataset/`: generated prompt-learning dataset
 - `subsumptions/`: extracted subsumption relationships from ontologies
 - `analyse_result/`: model-output analysis scripts and examples
-- `huggingface/`: Hugging Face dataset card, data preparation, and upload scripts
 - `scripts/`: setup and run automation
 
 ## Citation
