@@ -1,0 +1,52 @@
+{
+  "source": "prompt_learning_dataset.zip",
+  "ontologies": {
+    "foodon": {
+      "rows": 698,
+      "file": "foodon.jsonl",
+      "distances": [
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "formats": [
+        "natural_language",
+        "owl"
+      ]
+    },
+    "go-plus": {
+      "rows": 664,
+      "file": "go-plus.jsonl",
+      "distances": [
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "formats": [
+        "natural_language",
+        "owl"
+      ]
+    },
+    "snomedCT": {
+      "rows": 607,
+      "file": "snomedCT.jsonl",
+      "distances": [
+        1,
+        11
+      ],
+      "formats": [
+        "natural_language",
+        "owl"
+      ]
+    }
+  },
+  "total_rows": 1969
+}

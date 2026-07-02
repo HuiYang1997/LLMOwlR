@@ -39,7 +39,8 @@ def main():
         repo_type="dataset",
         folder_path=str(folder),
         commit_message=args.commit_message,
-        ignore_patterns=["__pycache__/*", "*.pyc", ".DS_Store"],
+        ignore_patterns=["__pycache__/*", "*.pyc", ".DS_Store", "data/dataset_summary.json"],
+        delete_patterns=["data/dataset_summary.json"],
     )
 
     print(f"Uploaded dataset to https://huggingface.co/datasets/{args.repo_id}")

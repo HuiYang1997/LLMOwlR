@@ -95,10 +95,20 @@ def main():
     parser = argparse.ArgumentParser(description="Prepare LLMOwlR data for Hugging Face Datasets.")
     parser.add_argument("--input", default="prompt_learning_dataset.zip", help="Source prompt dataset zip")
     parser.add_argument("--output", default="huggingface/data", help="Output folder for JSONL files")
+    parser.add_argument(
+        "--summary-output",
+        default=None,
+        help="Output path for dataset summary metadata. Defaults to <output parent>/metadata/dataset_summary.json",
+    )
     args = parser.parse_args()
 
     zip_path = Path(args.input)
     output_dir = Path(args.output)
+    summary_path = (
+        Path(args.summary_output)
+        if args.summary_output
+        else output_dir.parent / "metadata" / "dataset_summary.json"
+    )
     if not zip_path.is_file():
         raise FileNotFoundError(f"Input zip not found: {zip_path}")
 
@@ -125,10 +135,12 @@ def main():
         }
         summary["total_rows"] += len(rows)
 
-    with (output_dir / "dataset_summary.json").open("w", encoding="utf-8") as handle:
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    with summary_path.open("w", encoding="utf-8") as handle:
         json.dump(summary, handle, ensure_ascii=False, indent=2)
 
     print(f"Wrote {summary['total_rows']} rows to {output_dir}")
+    print(f"Wrote summary metadata to {summary_path}")
 
 
 if __name__ == "__main__":
