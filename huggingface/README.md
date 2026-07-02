@@ -13,6 +13,26 @@ tags:
 - reasoning
 - proof-generation
 - llm4proof
+configs:
+- config_name: default
+  data_files:
+  - split: train
+    path:
+    - data/foodon.jsonl
+    - data/go-plus.jsonl
+    - data/snomedCT.jsonl
+- config_name: foodon
+  data_files:
+  - split: train
+    path: data/foodon.jsonl
+- config_name: go-plus
+  data_files:
+  - split: train
+    path: data/go-plus.jsonl
+- config_name: snomedCT
+  data_files:
+  - split: train
+    path: data/snomedCT.jsonl
 ---
 
 # LLM4Proof Prompt Learning Dataset
@@ -20,6 +40,24 @@ tags:
 This dataset contains prompt-learning samples for generating and evaluating OWL ontology proofs. It is derived from the `prompt_learning_dataset.zip` artifact in the LLMOwlR/LLM4Proof repository.
 
 Each row contains a reasoning query, a shuffled list of candidate axioms, and the indices of the minimal support axioms in that shuffled list. Natural-language and OWL-formatted variants are represented as separate rows.
+
+## Dataset Viewer
+
+The default configuration combines all three ontology subsets in one `train` split. Separate `foodon`, `go-plus`, and `snomedCT` configurations are also provided for browsing or loading one ontology at a time.
+
+| Configuration | Split | Rows | Source file |
+| --- | --- | ---: | --- |
+| `default` | `train` | 1,969 | `data/*.jsonl` |
+| `foodon` | `train` | 698 | `data/foodon.jsonl` |
+| `go-plus` | `train` | 664 | `data/go-plus.jsonl` |
+| `snomedCT` | `train` | 607 | `data/snomedCT.jsonl` |
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("Hui97/LLMOwlR", split="train")
+foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="train")
+```
 
 ## Data Structure
 
@@ -31,7 +69,8 @@ huggingface/
 ├── data/
 │   ├── foodon.jsonl
 │   ├── go-plus.jsonl
-│   ├── snomedCT.jsonl
+│   └── snomedCT.jsonl
+├── metadata/
 │   └── dataset_summary.json
 ├── prepare_dataset.py
 └── upload_dataset.py
@@ -40,7 +79,7 @@ huggingface/
 JSONL columns:
 
 - `ontology`: ontology subset name, such as `foodon`, `go-plus`, or `snomedCT`
-- `distance`: atomic distance folder, such as `4`, `6`, or `10`
+- `distance`: proof-distance folder extracted from the original data; `foodon` and `go-plus` use `4, 6, 8, 10, 12, 14, 16`, while `snomedCT` uses `1` and `11`
 - `query_id`: source query id
 - `format`: `natural_language` or `owl`
 - `query`: prompt query
@@ -48,6 +87,8 @@ JSONL columns:
 - `correct_axiom_indices`: indices in `axioms` that form the gold support set
 - `correct_axioms`: gold support axiom text resolved from `correct_axiom_indices`
 - `source_path`: path inside the original zip archive
+
+Additional aggregate metadata is stored in `metadata/dataset_summary.json`. It is intentionally kept outside `data/` so that the Hugging Face dataset viewer only parses the JSONL data files.
 
 ## Preparation
 
@@ -70,13 +111,13 @@ export HF_TOKEN=<your_hugging_face_token>
 Then upload:
 
 ```bash
-python huggingface/upload_dataset.py --repo-id HuiYang1997/LLMOwlR
+python huggingface/upload_dataset.py --repo-id Hui97/LLMOwlR
 ```
 
-The public dataset URL is expected to be:
+The public dataset URL is:
 
 ```text
-https://huggingface.co/datasets/HuiYang1997/LLMOwlR
+https://huggingface.co/datasets/Hui97/LLMOwlR
 ```
 
 Override the target with `--repo-id` or `HF_REPO_ID` if the dataset should live under a different Hugging Face namespace.

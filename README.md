@@ -124,7 +124,7 @@ Prepared dataset upload folder: `huggingface/`
 Expected public dataset link:
 
 ```text
-https://huggingface.co/datasets/HuiYang1997/LLMOwlR
+https://huggingface.co/datasets/Hui97/LLMOwlR
 ```
 
 Prepare the Hugging Face JSONL layout from the bundled zip:
@@ -139,7 +139,7 @@ Upload after authenticating with Hugging Face:
 
 ```bash
 export HF_TOKEN=<your_hugging_face_token>
-python huggingface/upload_dataset.py --repo-id HuiYang1997/LLMOwlR
+python huggingface/upload_dataset.py --repo-id Hui97/LLMOwlR
 ```
 
 Use `--repo-id` or `HF_REPO_ID` to upload under a different namespace. The prepared JSONL rows contain:
@@ -153,6 +153,15 @@ Use `--repo-id` or `HF_REPO_ID` to upload under a different namespace. The prepa
 - `correct_axiom_indices`
 - `correct_axioms`
 - `source_path`
+
+The Hugging Face dataset card defines four viewer configurations:
+
+| Configuration | Rows | Contents |
+| --- | ---: | --- |
+| `default` | 1,969 | all ontology subsets |
+| `foodon` | 698 | FoodOn subset |
+| `go-plus` | 664 | GO-Plus subset |
+| `snomedCT` | 607 | SNOMED CT subset |
 
 See `huggingface/README.md` for the dataset card and detailed structure.
 
