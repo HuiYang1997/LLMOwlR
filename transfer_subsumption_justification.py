@@ -37,8 +37,14 @@ import pandas as pd
 from tqdm import tqdm
 from typing import Dict, List, Tuple, Set, Optional
 
-# 设置环境变量以避免交互式提示JVM内存大小和增加JVM内存
-os.environ['JAVA_TOOL_OPTIONS'] = '-Xmx12g'
+# Avoid DeepOnto/JVM interactive memory prompts, while allowing callers to tune memory.
+os.environ.setdefault('JAVA_TOOL_OPTIONS', '-Xmx12g')
+
+import jpype
+from deeponto import init_jvm
+
+if not jpype.isJVMStarted():
+    init_jvm(os.environ.get("DEEPONTO_JVM_MEMORY", "8g"))
 
 from deeponto.onto.ontology import Ontology
 from deeponto.onto.verbalisation import OntologyVerbaliser
