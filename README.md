@@ -39,7 +39,7 @@ INSTALL_RETRIEVAL=1 ./scripts/setup_and_run.sh
 INSTALL_RETRIEVAL=1 INSTALL_BM25=1 ./scripts/setup_and_run.sh
 
 # Run generation on your own ontology instead of the small bundled example.
-GENERATION_ARGS="--ont data/foodon.fss --n_just 100 --n_sub 50" ./scripts/setup_and_run.sh
+GENERATION_ARGS="--ont <your_ont_path!> --n_just 100 --n_sub 50" ./scripts/setup_and_run.sh
 
 # Skip either part.
 RUN_GENERATION=0 ./scripts/setup_and_run.sh
