@@ -1,4 +1,4 @@
-# LLMs for Ontology Proof (LLM4Proof)
+# LLMs for Ontology Proof
 
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Hugging%20Face-yellow)](https://huggingface.co/datasets/Hui97/LLMOwlR)
 
