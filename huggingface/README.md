@@ -21,18 +21,6 @@ configs:
     - data/foodon.jsonl
     - data/go-plus.jsonl
     - data/snomedCT.jsonl
-- config_name: foodon
-  data_files:
-  - split: test
-    path: data/foodon.jsonl
-- config_name: go-plus
-  data_files:
-  - split: test
-    path: data/go-plus.jsonl
-- config_name: snomedCT
-  data_files:
-  - split: test
-    path: data/snomedCT.jsonl
 ---
 
 # LLM4Proof Prompt Learning Dataset
@@ -47,20 +35,17 @@ Each row contains a reasoning query, a shuffled list of candidate axioms, and th
 
 ## Dataset Viewer
 
-The default configuration combines all three ontology subsets in one `test` split. Separate `foodon`, `go-plus`, and `snomedCT` configurations are also provided for browsing or loading one ontology at a time.
+The default configuration combines all three ontology subsets in one `test` split. Use the `ontology` column to filter for `foodon`, `go-plus`, or `snomedCT`.
 
 | Configuration | Split | Rows | Source file |
 | --- | --- | ---: | --- |
 | `default` | `test` | 1,969 | `data/*.jsonl` |
-| `foodon` | `test` | 698 | `data/foodon.jsonl` |
-| `go-plus` | `test` | 664 | `data/go-plus.jsonl` |
-| `snomedCT` | `test` | 607 | `data/snomedCT.jsonl` |
 
 ```python
 from datasets import load_dataset
 
 dataset = load_dataset("Hui97/LLMOwlR", split="test")
-foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="test")
+foodon = dataset.filter(lambda row: row["ontology"] == "foodon")
 ```
 
 ## Data Structure
