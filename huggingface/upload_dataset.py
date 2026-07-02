@@ -14,7 +14,7 @@ except ModuleNotFoundError as exc:
 
 def main():
     parser = argparse.ArgumentParser(description="Upload the prepared LLMOwlR dataset to Hugging Face.")
-    parser.add_argument("--repo-id", default=os.environ.get("HF_REPO_ID"), help="Dataset repo id, e.g. HuiYang1997/LLMOwlR")
+    parser.add_argument("--repo-id", default=os.environ.get("HF_REPO_ID"), help="Dataset repo id, e.g. Hui97/LLMOwlR")
     parser.add_argument("--folder", default="huggingface", help="Folder to upload")
     parser.add_argument("--private", action="store_true", help="Create the dataset repo as private")
     parser.add_argument("--commit-message", default="Upload LLMOwlR prompt learning dataset")

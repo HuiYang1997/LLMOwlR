@@ -1,5 +1,7 @@
 # LLMs for Ontology Proof (LLM4Proof)
 
+↳ [Hugging Face Dataset](https://huggingface.co/datasets/Hui97/LLMOwlR)
+
 Code for automatically generating and evaluating datasets for OWL ontology proof generation with large language models.
 
 ## Requirements
@@ -51,30 +53,71 @@ SKIP_INSTALL=1 VENV_DIR=/path/to/venv ./scripts/setup_and_run.sh
 
 The default generation command uses `data/example.fss`, `--n_just 1`, `--n_sub 1`, `--distances 4`, and `--skip_retrieval` so that the script can validate the Java/DeepOnto path without downloading embedding models. For the full pipeline, pass a real ontology and omit `--skip_retrieval`.
 
-## Usage
+## Dataset
 
-### 1. Dataset Generation
+The paper dataset is available in two forms:
 
-Generate ontology reasoning datasets from OWL/FSS files:
+- Hugging Face dataset: a viewer-friendly JSONL version for browsing and `datasets.load_dataset`.
+- Zip dataset: the original `prompt_learning_dataset.zip` artifact with the folder structure used by the code.
 
-```bash
-python generateDataset.py --ont <ontology_file> --n_just <max_justifications> --n_sub <num_subsumptions>
+### Hugging Face Dataset
+
+Public link:
+
+```text
+https://huggingface.co/datasets/Hui97/LLMOwlR
 ```
 
-Example:
+Load with Hugging Face Datasets:
 
-```bash
-python generateDataset.py --ont data/foodon.fss --n_just 100 --n_sub 50
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("Hui97/LLMOwlR", split="train")
+foodon = load_dataset("Hui97/LLMOwlR", "foodon", split="train")
 ```
 
-Additional options:
+Available viewer configurations:
 
-- `--distances`: comma-separated atomic distances, default `4,6,8,10,12,14,16`
-- `--skip_retrieval`: stop after subsumptions, justifications, and RAG JSONL generation
-- `--retrieval_model`: retrieval model passed to `mimic_run.py`, default `bge`
-- `--subsumption_java_opts` / `--justification_java_opts`: Java heap/options
+| Configuration | Rows | Contents |
+| --- | ---: | --- |
+| `default` | 1,969 | all ontology subsets |
+| `foodon` | 698 | FoodOn subset |
+| `go-plus` | 664 | GO-Plus subset |
+| `snomedCT` | 607 | SNOMED CT subset |
 
-The data used in the paper is provided in `prompt_learning_dataset.zip`. Its original structure is:
+Each JSONL row contains:
+
+- `ontology`
+- `atomic_distance`
+- `query_id`
+- `format`
+- `query`
+- `axioms`
+- `correct_axiom_indices`
+- `correct_axioms`
+- `source_path`
+
+`atomic_distance` follows the metric used in the paper for selecting target conclusions. For an inferred atomic subsumption `A ⊑ B`, where `A` and `B` are atomic concepts, it is a heuristic estimate of reasoning length: roughly, the length of the shortest direct-subsumption chain connecting `A` to `B`, which also indicates about how many intermediate atomic concepts are needed between the two concepts. A direct subsumption has atomic distance `1`; larger values usually indicate longer or more complex reasoning.
+
+To rebuild and upload the Hugging Face layout:
+
+```bash
+python huggingface/prepare_dataset.py \
+  --input prompt_learning_dataset.zip \
+  --output huggingface/data
+
+export HF_TOKEN=<your_hugging_face_token>
+python huggingface/upload_dataset.py --repo-id Hui97/LLMOwlR
+```
+
+The prepared upload folder is `huggingface/`. See `huggingface/README.md` for the dataset card and detailed structure.
+
+### Zip Dataset
+
+The original paper data is included as `prompt_learning_dataset.zip`. It can be downloaded directly from the GitHub repository and preserves the structure used by the generation and analysis code.
+
+Original zip structure:
 
 ```text
 prompt_learning_dataset/
@@ -106,6 +149,29 @@ Key files:
 - `verbalization_map.json`: maps OWL URIs to human-readable labels
 - `all_length_statistics.json`: query-length distribution and support indices grouped by proof length
 
+## Usage
+
+### 1. Dataset Generation
+
+Generate ontology reasoning datasets from OWL/FSS files:
+
+```bash
+python generateDataset.py --ont <ontology_file> --n_just <max_justifications> --n_sub <num_subsumptions>
+```
+
+Example:
+
+```bash
+python generateDataset.py --ont data/foodon.fss --n_just 100 --n_sub 50
+```
+
+Additional options:
+
+- `--distances`: comma-separated atomic distances, default `4,6,8,10,12,14,16`
+- `--skip_retrieval`: stop after subsumptions, justifications, and RAG JSONL generation
+- `--retrieval_model`: retrieval model passed to `mimic_run.py`, default `bge`
+- `--subsumption_java_opts` / `--justification_java_opts`: Java heap/options
+
 ### 2. Result Analysis
 
 Analyze model outputs and compute performance metrics:
@@ -116,54 +182,6 @@ python analysis_script.py Qwen3-32B_output.json
 ```
 
 The input JSON must contain `prompt`, `response`, and ground-truth IDs such as `correct_ids`.
-
-## Hugging Face Dataset
-
-Prepared dataset upload folder: `huggingface/`
-
-Expected public dataset link:
-
-```text
-https://huggingface.co/datasets/Hui97/LLMOwlR
-```
-
-Prepare the Hugging Face JSONL layout from the bundled zip:
-
-```bash
-python huggingface/prepare_dataset.py \
-  --input prompt_learning_dataset.zip \
-  --output huggingface/data
-```
-
-Upload after authenticating with Hugging Face:
-
-```bash
-export HF_TOKEN=<your_hugging_face_token>
-python huggingface/upload_dataset.py --repo-id Hui97/LLMOwlR
-```
-
-Use `--repo-id` or `HF_REPO_ID` to upload under a different namespace. The prepared JSONL rows contain:
-
-- `ontology`
-- `distance`
-- `query_id`
-- `format`
-- `query`
-- `axioms`
-- `correct_axiom_indices`
-- `correct_axioms`
-- `source_path`
-
-The Hugging Face dataset card defines four viewer configurations:
-
-| Configuration | Rows | Contents |
-| --- | ---: | --- |
-| `default` | 1,969 | all ontology subsets |
-| `foodon` | 698 | FoodOn subset |
-| `go-plus` | 664 | GO-Plus subset |
-| `snomedCT` | 607 | SNOMED CT subset |
-
-See `huggingface/README.md` for the dataset card and detailed structure.
 
 ## Directory Structure
 
